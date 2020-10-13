@@ -1,0 +1,25 @@
+variables:
+    MYSQL_DATABASE: "profilesdb"
+    MYSQL_ROOT_PASSWORD: "admin"
+    MYSQL_ALLOW_EMPTY_PASSWORD: 1
+
+test_project:
+    stage: test
+    
+    artifacts:
+        paths:
+            - profile
+        expire_in: 1 week
+        
+    services:
+        - name: mariadb:latest
+        
+    image: maven:latest
+    
+    before_script:
+        - cd profile/profile
+    
+    script:
+        - mvn -e -Dtest="com.mti.profile.repositories.*" test
+        - mvn -e -Dtest="com.mti.profile.services.*" test
+        - mvn -e -Dtest="com.mti.profile.controller.*" test

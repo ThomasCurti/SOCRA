@@ -1,0 +1,30 @@
+version: "3"
+services:
+    web:
+        restart: on-failure
+        build: 
+            context: ./profile/profile
+            dockerfile: DockerFile
+        ports:
+            - "8080:8080"
+        environment:
+            WAIT_HOSTS: mysql:3306
+        command: mvn clean spring-boot:run
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://hk-mysql:3306/profilesdb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+            SPRING_DATASOURCE_USERNAME: springuser
+            SPRING_DATASOURCE_PASSWORD: springpassword   
+        depends_on:
+            - hk-mysql
+        links:
+            - hk-mysql
+            
+    hk-mysql:
+        container_name: hk-mysql
+        image: mariadb
+        build: 
+            context: ./Database
+            dockerfile: DockerFile
+        ports:
+            - "3306:3306"
+        restart: always

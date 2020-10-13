@@ -1,0 +1,9 @@
+FROM mariadb:latest
+
+ENV MYSQL_DATABASE="profilesdb"
+ENV MYSQL_ROOT_PASSWORD="admin"
+ENV MYSQL_ALLOW_EMPTY_PASSWORD=1
+ENV MYSQL_USER="springuser"
+ENV MYSQL_PASSWORD="springpassword"
+
+ADD schemas.sql /docker-entrypoint-initdb.d
